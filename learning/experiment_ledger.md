@@ -7,4 +7,5 @@
 
 | Date | Phase | Goal | Config | Seed | Data | Device | Result | Artifact | Repro? | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2026-07-15 | 0 | 建仓骨架 + 课程锁定 | n/a | n/a | n/a | local workdir | scaffold ready | repo root | Y | 等服务器 clone 上游与最小推理 |
+| 2026-07-15 | 0 | 建仓骨架 + 课程锁定 | n/a | n/a | n/a | local workdir | scaffold ready | repo root | Y | 首版 upstream 仅 .gitkeep，用户找不到 model 文件 |
+| 2026-07-15 | 0 | 修复：官方仓挂 submodule | submodule pin | n/a | n/a | local workdir | upstream 含 model_minimind.py | `.gitmodules` + `upstream@512eed0` | Y | 用户需 `git pull` + `git submodule update --init --recursive` |

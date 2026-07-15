@@ -53,31 +53,21 @@ def main() -> None:
 
     torch.manual_seed(args.seed)
 
-    cfg_kwargs = {
-        "hidden_size": args.hidden,
-        "num_hidden_layers": args.layers,
-    }
-
-    # Best-effort MoE toggles across versions
+    # Fields verified against upstream MiniMindConfig (use_moe / num_experts / ...)
     if args.moe:
-        for key, val in (
-            ("use_moe", True),
-            ("moe", True),
-            ("n_routed_experts", 4),
-            ("num_experts_per_tok", 1),
-        ):
-            cfg_kwargs[key] = val
-
-    try:
-        config = MiniMindConfig(**cfg_kwargs)
-    except TypeError:
-        # Fall back to defaults then setattr
-        config = MiniMindConfig()
-        for k, v in cfg_kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-            elif args.moe and k in {"use_moe", "moe"}:
-                print(f"[warn] config has no field {k}; MoE may need manual flag")
+        config = MiniMindConfig(
+            hidden_size=args.hidden,
+            num_hidden_layers=args.layers,
+            use_moe=True,
+            num_experts=4,
+            num_experts_per_tok=1,
+        )
+    else:
+        config = MiniMindConfig(
+            hidden_size=args.hidden,
+            num_hidden_layers=args.layers,
+            use_moe=False,
+        )
 
     model = MiniMindForCausalLM(config)
     total = sum(p.numel() for p in model.parameters())
@@ -85,13 +75,22 @@ def main() -> None:
 
     print("=== MiniMind param count ===")
     print(f"upstream:   {args.upstream.resolve()}")
-    print(f"config:     {config}")
+    print(f"use_moe:    {config.use_moe}")
+    print(f"hidden:     {config.hidden_size}")
+    print(f"layers:     {config.num_hidden_layers}")
+    print(f"q/kv heads: {config.num_attention_heads}/{config.num_key_value_heads}")
+    if config.use_moe:
+        print(
+            f"moe:        experts={config.num_experts} "
+            f"top_k={config.num_experts_per_tok} "
+            f"aux_coef={config.router_aux_loss_coef}"
+        )
     print(f"total:      {total:,}  ({total/1e6:.3f} M)")
     print(f"trainable:  {trainable:,}  ({trainable/1e6:.3f} M)")
     if args.moe:
         print(
             "note: MoE *active* params ≈ backbone + top-k experts, not total.\n"
-            "      Compute active from router top-k after reading model_minimind.py."
+            "      See use_moe / num_experts / num_experts_per_tok in model_minimind.py."
         )
 
 

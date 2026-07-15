@@ -1,8 +1,9 @@
 # Phase 0 · 项目地图与工程底座
 
-> 状态：🔄 in progress（骨架已建，等待服务器 clone 上游 + 最小推理证据）  
+> 状态：🔄 in progress（**upstream 已挂为 submodule**；等服务器 `--recurse-submodules` + 最小推理证据）  
 > 日期：2026-07-15  
-> 上游：https://github.com/jingyaogong/minimind
+> 上游：https://github.com/jingyaogong/minimind  
+> 本仓路径：`upstream/model/model_minimind.py`（不要在仓库根目录找 `model/`）
 
 ---
 
@@ -44,16 +45,21 @@ Tokenizer(6400)
     → eval / convert / serve
 ```
 
-| 边界 | 路径（上游） | 说明 |
+| 边界 | 路径（相对 **本仓根目录**） | 说明 |
 |---|---|---|
-| 配置即接口 | `model/model_minimind.py` → `MiniMindConfig` | dim/layers/heads/moe 开关 |
-| 模型实现 | `model/model_minimind.py` | Dense FFN vs MoE experts |
-| LoRA | `model/model_lora.py` | 教学简化版 |
-| 数据 | `dataset/*.jsonl` + dataset 代码 | pretrain/sft/dpo/rlaif/agent |
-| 训练入口 | `trainer/train_*.py` | 一阶段一脚本 |
-| 公共工具 | `trainer/trainer_utils.py` | DDP/日志/ckpt 等 |
-| 推理评测 | `eval_llm.py` | CLI 生成 |
-| 转换服务 | `scripts/convert_model.py`, `scripts/serve_openai_api.py` | HF / API |
+| 配置即接口 | `upstream/model/model_minimind.py` → `MiniMindConfig` | `hidden_size` / `num_hidden_layers` / **`use_moe`** |
+| MoE 字段 | 同上 | `num_experts=4`, `num_experts_per_tok=1`, `moe_intermediate_size`, `norm_topk_prob`, `router_aux_loss_coef` |
+| 模型实现 | `upstream/model/model_minimind.py` | `MiniMindForCausalLM`；Dense FFN vs MoE experts |
+| LoRA | `upstream/model/model_lora.py` | 教学简化版 |
+| 数据代码 | `upstream/dataset/lm_dataset.py` | pretrain/sft/dpo/… 契约 |
+| 训练入口 | `upstream/trainer/train_*.py` | 一阶段一脚本 |
+| 公共工具 | `upstream/trainer/trainer_utils.py` | DDP/日志/ckpt 等 |
+| 推理评测 | `upstream/eval_llm.py` | CLI 生成 |
+| 转换服务 | `upstream/scripts/convert_model.py`, `upstream/scripts/serve_openai_api.py` | HF / API |
+
+**路径坑（已踩过）：**  
+学习仓根目录 **没有** `model/`。官方代码全部在 **`upstream/` submodule** 下。  
+若 `upstream/` 几乎为空，是 clone 时没拉 submodule，不是文件改名。
 
 ---
 

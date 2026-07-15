@@ -14,15 +14,22 @@ git rev-parse --short HEAD 2>/dev/null || echo "not a git repo?"
 git status -sb || true
 
 echo
-echo "-- upstream --"
+echo "-- upstream (git submodule) --"
+if [[ ! -f upstream/model/model_minimind.py ]]; then
+  echo "MISSING upstream/model/model_minimind.py"
+  echo "This repo vendors MiniMind via submodule. Fix with:"
+  echo "  git submodule update --init --recursive"
+  echo "Or re-clone:"
+  echo "  git clone --recurse-submodules https://github.com/hao1696159975-code/my_minimind.git"
+  exit 1
+fi
 if [[ -d upstream/.git || -f upstream/.git ]]; then
   git -C upstream rev-parse --short HEAD
   git -C upstream log -1 --oneline
 else
-  echo "MISSING upstream/. Run:"
-  echo "  git clone --depth 1 https://github.com/jingyaogong/minimind.git upstream"
-  exit 1
+  echo "WARN: upstream files exist but .git metadata missing (ok if vendored copy)"
 fi
+git submodule status || true
 
 echo
 echo "-- python / torch --"

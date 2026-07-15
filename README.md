@@ -10,7 +10,8 @@
 |---|---|
 | 上游仓库 | https://github.com/jingyaogong/minimind |
 | 主线规格 | minimind-3 **64M Dense** / minimind-3-moe **198M-A64M** |
-| 本仓角色 | 学习笔记、实验配置、测试、扩展；上游代码放 `upstream/`（submodule 或 vendor） |
+| 本仓角色 | 学习笔记、实验配置、测试、扩展；**官方源码以 git submodule 挂在 `upstream/`** |
+| 上游 pin | 见 `.gitmodules` + `git submodule status`（当前主线含 `model/model_minimind.py`） |
 | 许可 | 上游 Apache-2.0；本仓笔记与扩展默认同许可，以 `LICENSE` 为准 |
 
 ## 当前进度
@@ -50,25 +51,40 @@ my_minimind/
 
 ## 快速开始（Phase 0）
 
+> **重要：** 普通 `git clone` **不会**自动带上 `upstream/` 里的官方文件。  
+> 必须加 `--recurse-submodules`，或 clone 后再 `git submodule update --init --recursive`。
+
 ```bash
-# 1) clone 本仓
-git clone https://github.com/hao1696159975-code/my_minimind.git
+# 1) clone 本仓（推荐：一次拉齐 submodule）
+git clone --recurse-submodules https://github.com/hao1696159975-code/my_minimind.git
 cd my_minimind
 
-# 2) 拉取上游（二选一）
-# 方式 A：submodule（推荐，提交清晰）
-git submodule add https://github.com/jingyaogong/minimind.git upstream
+# 若你已经用普通 clone（upstream 几乎是空的），补拉上游：
 git submodule update --init --recursive
 
-# 方式 B：普通 clone
-git clone --depth 1 https://github.com/jingyaogong/minimind.git upstream
+# 验证官方模型文件存在（应输出 OK）
+test -f upstream/model/model_minimind.py && echo OK || echo MISSING_UPSTREAM
 
-# 3) 环境（在服务器 4090D 上优先）
+# 2) 环境（在服务器 4090D 上优先）
 cd upstream
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+cd ..
+
+# 3) Phase 0 检查
+bash scripts/lab/phase0_checklist.sh
 ```
+
+### 关键路径（submodule 拉齐后）
+
+| 你要找的 | 实际路径 |
+|---|---|
+| 模型 / Config / MoE | `upstream/model/model_minimind.py` |
+| LoRA | `upstream/model/model_lora.py` |
+| Dataset | `upstream/dataset/lm_dataset.py` |
+| Pretrain / SFT / DPO… | `upstream/trainer/train_*.py` |
+| 推理 | `upstream/eval_llm.py` |
 
 详细地图与验收：见 [`learning/00_project_map.md`](learning/00_project_map.md)。
 
