@@ -1,0 +1,14 @@
+# Phase 4 placeholder — DO NOT start full train in Phase 0.
+# Values will be aligned to upstream CLI flags after reading train_pretrain.py.
+name: smoke_dense
+model:
+  hidden_size: 128
+  num_hidden_layers: 2
+  # fill real field names from MiniMindConfig in Phase 2
+train:
+  max_steps: 20
+  batch_size: 2
+  seq_len: 128
+  seed: 42
+  precision: bf16
+notes: "correctness probe only; not a quality run"

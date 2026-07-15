@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.env
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Training artifacts (keep structure, drop heavy blobs)
+runs/**
+!runs/.gitkeep
+!runs/**/README.md
+!runs/**/*.md
+*.pth
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.gguf
+*.ckpt
+out/
+checkpoints/
+wandb/
+swanlog/
+outputs/
+
+# Data (large jsonl — document download steps instead)
+upstream/dataset/*.jsonl
+*.jsonl
+!**/fixtures/**/*.jsonl
+
+# Upstream local env / caches
+upstream/.venv/
+upstream/**/__pycache__/
+
+# OS / secrets
+*.pem
+*.key
+secrets.*
+credentials.*
