@@ -10,3 +10,4 @@
 | 2026-07-15 | 0 | 建仓骨架 + 课程锁定 | n/a | n/a | n/a | local workdir | scaffold ready | repo root | Y | 首版 upstream 仅 .gitkeep，用户找不到 model 文件 |
 | 2026-07-15 | 0 | 修复：官方仓挂 submodule | submodule pin | n/a | n/a | local workdir | upstream 含 model_minimind.py | `.gitmodules` + `upstream@512eed0` | Y | 用户需 `git pull` + `git submodule update --init --recursive` |
 | 2026-07-15 | 0 | Source Tour 00/01 预习开课 | n/a | n/a | n/a | docs | 全仓地图+model 精读 | `learning/source_tour_00_map.md` | Y | 用户要求先过源码再正式上课 |
+| 2026-07-15 | L01 | 正式开课 + Git 工作流 | n/a | n/a | n/a | docs | L01 笔记模板+git_for_class | `learning/L01_notes.md` `learning/git_for_class.md` | Y | 每课嵌入 git 提交练习 |

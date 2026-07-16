@@ -19,12 +19,14 @@
 | 最小实验 | 10–20 | shape / mask / 1-step / 日志（能 CPU 就先 CPU） |
 | 确认 | 5–10 | 本课 Q1–Q3（短答） |
 | 落盘 | 5 | 更新 `experiment_ledger.md` 或笔记 3 行 |
+| **Git** | 5–10 | 见 `git_for_class.md`：该提交则 add/commit/push |
 
 ### 0.2 出门证规则
 
 - 没交本课 **Q 短答** → 不进下一课精读  
 - 没做标了 🔬 的实验 → 该 Phase 不能标 mastered  
 - 长训前必须有 smoke（极小配置）  
+- **从 L01 起**：有笔记/实验产物的课，结束应能 `push` 到 GitHub（无大文件）  
 
 ### 0.3 当前进度指针
 
@@ -33,7 +35,7 @@
 | 课程方案 | ✅ Dense 主线 + MoE 专章 |
 | 学习仓 scaffold | ✅ |
 | upstream submodule | ✅ 需 `git submodule update --init --recursive` |
-| **L01 模块1上：Dense 主链** | 🔄 已讲，等 Q1–Q3 |
+| **L01 模块1上：Dense 主链** | 🔄 正式开课中（含 Git 练习） |
 | L02 起 | ⏳ 未开 |
 
 ---
