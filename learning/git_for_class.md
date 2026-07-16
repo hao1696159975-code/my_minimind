@@ -108,6 +108,47 @@ git reset HEAD 路径
 2. 你日常提交的是**学习仓自己的文件**；`git status` 里若 `upstream` 显示特殊标记，先别乱 commit。  
 3. 需要官方更新时由课程指示再 `submodule update`；自己改模型优先拷到 `extensions/`。
 
+### 5.1 学员真实踩坑：`路径规格在子模组 upstream 中`
+
+你在 **学习仓根目录** 执行：
+
+```bash
+git add upstream/model/model_minimind.py
+# fatal: 路径规格 '...' 在子模组 'upstream' 中
+```
+
+**原因：** `upstream` 是独立 git 仓库。父仓库 `my_minimind` 不能直接 `add` 子仓库里面的单个文件。
+
+**正确做法（课程默认）：不要改 upstream 官方文件来交作业。**
+
+读代码时加的注释，请写到：
+
+```bash
+learning/L01_notes.md          # 或 learning/annotations/
+# 然后在父仓库：
+git add learning/L01_notes.md
+git commit -m "L01: my notes"
+git push origin main
+```
+
+若你已经在 `upstream/` 里改花了、只想丢弃注释：
+
+```bash
+cd upstream
+git status
+git checkout -- model/model_minimind.py   # 丢弃对该文件的本地修改
+cd ..
+```
+
+若将来真要改官方代码做扩展（进阶，L23+）：复制到 `extensions/`，或在 `upstream` 内单独 commit（且你有权 push 的 fork）——**L01 阶段不要走这条。**
+
+### 5.2 另一个真实坑：路径拼写
+
+```text
+错：upstream/modle/model_minimind.py   # modle 多写了 e 顺序
+对：upstream/model/model_minimind.py
+```
+
 ---
 
 ## 6. 常用急救
